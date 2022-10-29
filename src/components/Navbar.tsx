@@ -2,6 +2,7 @@ import Image from "next/image";
 import { IoMdNotifications } from 'react-icons/io'
 import { BiChevronDown, BiSearch } from 'react-icons/bi'
 import Link from "next/link";
+import { signOutHandler } from "lib/auth";
 
 export default function Navbar() {
   return (
@@ -22,7 +23,7 @@ export default function Navbar() {
           <IoMdNotifications size={24} />
         </div>
 
-        <div className="profile-dropdown">
+        <div className="profile-dropdown" onClick={signOutHandler}>
           <Image src="/user.jpeg" width={36} height={36} alt="" />
           <span>Kadirhan Yılmaz</span>
           <BiChevronDown size={24} />

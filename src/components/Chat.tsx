@@ -2,8 +2,11 @@ import Image from "next/image"
 import { AiOutlinePaperClip, AiTwotoneAudio } from 'react-icons/ai'
 import { FaPhoneAlt, FaPaperPlane } from 'react-icons/fa'
 import { BiDotsVerticalRounded } from 'react-icons/bi'
+import { useEffect } from "react"
 
 export default function Chat() {
+
+
   return (
     <div className="chat">
         <div className="title">
