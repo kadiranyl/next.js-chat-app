@@ -273,9 +273,46 @@ button, input {
             width: 100%;
             border-bottom: $border;
             padding: 18px 0;
+            cursor: pointer;
 
             &:last-of-type {
               border-bottom: none;
+            }
+
+            .avatar {
+              position: relative;
+              display: flex;
+              align-items: center;
+
+              .status {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                background: $gray;
+                width: 12px;
+                height: 12px;
+                border-radius: 9px;
+              }
+              .status.online::before {
+                content: "";
+                position: absolute;
+                bottom: 1px;
+                right: 1px;
+                background: $theme-color;
+                width: 10px;
+                height: 10px;
+                border-radius: 9px;
+              }
+              .status.offline::before {
+                content: "";
+                position: absolute;
+                bottom: 1px;
+                right: 1px;
+                background: $light-gray;
+                width: 10px;
+                height: 10px;
+                border-radius: 9px;
+              }
             }
 
             .content {
@@ -373,16 +410,18 @@ button, input {
           flex-direction: column;
           width: 100%;
           justify-content: space-between;
-          padding: 32px;
+          padding: 0 32px 32px 32px;
           height: 100px;
           flex: 1;
-          gap: 16px;
 
 
           .messages-section {
             height: 100%;
             width: 100%;
             overflow-y: scroll;
+            display: flex;
+            padding: 12px 0;
+            flex-direction: column-reverse;
 
 
             .message-me {
@@ -461,7 +500,15 @@ button, input {
           }
 
 
-
+          .close {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 20;
+          }
+          
 
           .send-message {
             width: 100%;
@@ -481,12 +528,32 @@ button, input {
               color: $light-gray;
             }
 
+            
             .send-more {
               display: flex;
               align-items: center;
               padding-right: 26px;
               gap: 16px;
+
               
+              
+              .pick-emoji {
+                display: flex;
+                align-items: center;
+                position: relative;
+
+
+                .EmojiPickerReact {
+                  position: absolute;
+                  bottom: 50px;
+                  right: -150px;
+                  z-index: 50;
+
+                  .epr-body {
+                    width: 100%;
+                  }
+                }
+              }
 
               svg {
                 color: $light-gray;

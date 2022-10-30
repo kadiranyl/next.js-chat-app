@@ -1,21 +1,24 @@
 import Image from "next/image";
 import { IoMdNotifications } from 'react-icons/io'
-import { BiChevronDown, BiSearch } from 'react-icons/bi'
+import { BiChevronDown } from 'react-icons/bi'
 import Link from "next/link";
 import { signOutHandler } from "lib/auth";
+import { useApp } from "context/AppContext";
+import Search from "./Search";
+import { auth } from "lib/firebase";
 
 export default function Navbar() {
+  const { fireUser } = useApp()
+  
+
   return (
     <nav>
       <div className="nav-item">
         <Link href="/" className="logo">
           <Image src="/logo.svg" width={56} height={56} alt="" />
         </Link>
-
-        <div className="search-input">
-          <BiSearch size={20} />
-          <input type="text" placeholder="Find person, group name..." />
-        </div>
+  
+        <Search />      
       </div>
 
       <div className="nav-item">
@@ -24,8 +27,8 @@ export default function Navbar() {
         </div>
 
         <div className="profile-dropdown" onClick={signOutHandler}>
-          <Image src="/user.jpeg" width={36} height={36} alt="" />
-          <span>Kadirhan Yılmaz</span>
+          <Image src={auth.currentUser?.photoURL} width={36} height={36} alt="" />
+          <span>{auth.currentUser?.displayName}</span>
           <BiChevronDown size={24} />
         </div>
       </div>

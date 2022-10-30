@@ -1,4 +1,3 @@
-import { auth } from "lib/firebase";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Navbar from "./Navbar";
@@ -9,15 +8,16 @@ export default function Layout({children, ...customMeta}: any) {
   
   const meta = {
     description: ``,
-    defaultTitle: 'Kadirhan Yılmaz',
+    defaultTitle: 'Zuppa | Real-time Chatting',
     image: "/avatar.png",
     type: "website",
     path: process.env.NEXT_PUBLIC_SITE_URL + router.asPath,
     ...customMeta,
   };
+  
 
 
-  if (auth.currentUser) {
+  if (true) {
     return (
       <>
           <Head>

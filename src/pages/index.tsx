@@ -1,7 +1,6 @@
-import Chat from "components/Chat"
+import Chat from "components/Messages"
 import Layout from "components/Layout"
-import Messages from "components/Messages"
-import { useApp } from "context/AppContext"
+import Messages from "components/Chats"
 
 export default function Home() {
   
