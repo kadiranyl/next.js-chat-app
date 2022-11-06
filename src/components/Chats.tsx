@@ -2,12 +2,12 @@ import { useApp } from "context/AppContext"
 import dayjs from "dayjs"
 import { auth, getUserChats, openChat } from "lib/firebase"
 import Image from "next/image"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { IoMdAdd } from 'react-icons/io'
 
 
 export default function Messages() {
-  const { setSearch, searchResult, search, setSelectedChat, setMessage, setFocusSearch }: any = useApp()
+  const { setSearch, searchResult, search, setSelectedChat, setMessage, setFocusSearch, router }: any = useApp()
 
   const [fireUsersChat, setFireUsersChat] = useState([{ display_name: '', image_url: '', biography: '', uid: '', online: false }])
   const [chats, setChats] = useState(Array)
@@ -25,14 +25,14 @@ export default function Messages() {
 
   useEffect(() => {
     if(localStorage.getItem("last_opened_chat") && chats.length>0) {
-      openChat(setSearch, auth.currentUser?.uid, localStorage.getItem("last_opened_chat"), setSelectedChat)
+      openChat(setSearch, auth.currentUser?.uid, localStorage.getItem("last_opened_chat"), setSelectedChat, router)
     }
   }, [chats])
 
 
 
   const openChatHandler = (chat: any) => {
-    openChat(setSearch, auth.currentUser?.uid, chat.uid, setSelectedChat)
+    openChat(setSearch, auth.currentUser?.uid, chat.uid, setSelectedChat, router)
 
     setMessage("")
   }
@@ -60,7 +60,7 @@ export default function Messages() {
           
           {searchResult.length>0 ? (
             searchResult.map((infos: any, index: any) => (
-              <div className="message-item" key={index} onClick={() => openChat(setSearch, auth.currentUser?.uid, infos.uid, setSelectedChat) }>
+              <div className="message-item" key={index} onClick={() => openChat(setSearch, auth.currentUser?.uid, infos.uid, setSelectedChat, router) }>
                 <div className="content">
                   <div className="avatar">
                     <Image src={infos?.image_url} width={36} height={36} alt="" />
@@ -102,7 +102,7 @@ export default function Messages() {
               {chats && chats.map((chat: any, index) => {
                 if (chat.favorite === true) {
                   return (
-                    <div key={index} className="message-item" onClick={() => openChat(setSearch, auth.currentUser?.uid, chat.uid, setSelectedChat) }>
+                    <div key={index} className="message-item" onClick={() => openChat(setSearch, auth.currentUser?.uid, chat.uid, setSelectedChat, router) }>
                       <div className="content">
                         <Image src={findFireUsersChat(chat.uid).image_url} width={36} height={36} alt="" />
                         <div className="content-title">
@@ -136,7 +136,7 @@ export default function Messages() {
                     <div className="content">
                       <div className="avatar">
                         <Image src={findFireUsersChat(chat.uid).image_url} width={36} height={36} alt="" />
-                        <div className={`status ${findFireUsersChat(chat.uid).online ? true : "offline"}`}></div>
+                        <div className={`status ${findFireUsersChat(chat.uid).online ? "online" : "offline"}`}></div>
                       </div>
                       
                       <div className="content-title">

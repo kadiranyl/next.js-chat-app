@@ -163,8 +163,13 @@ export async function changeTypingStatus(selectedChat: any, chat: any, value: bo
 
 
 
-export async function openChat(setSearch : Function, uid: any, uid2: any, setSelectedChat: Function) {
+export async function openChat(setSearch : Function, uid: any, uid2: any, setSelectedChat: Function, router: any) {
   setSearch("")
+
+  if (router.asPath === "/?chats=active") {
+    router.push("/")
+  }
+
   const chatId = uid>uid2 ? `${uid}-${uid2}` : `${uid2}-${uid}`
 
 
@@ -175,7 +180,9 @@ export async function openChat(setSearch : Function, uid: any, uid2: any, setSel
       if (!hasChat.data()) {
         const docRef = await setDoc(doc(collection(db, "messages"), chatId), {
           msgs: [],
-          timestamp: serverTimestamp()
+          timestamp: serverTimestamp(),
+          uid: uid,
+          uid2: uid2,
         });
   
   

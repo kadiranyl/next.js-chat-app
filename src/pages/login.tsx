@@ -1,11 +1,12 @@
+import { useApp } from 'context/AppContext'
 import { loginUser } from 'lib/auth'
-import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
 export default function Register() {
-  const router = useRouter()
+  const { router }: any = useApp()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  
   return (
     <div className='auth-page'>
         <form onSubmit={(e: any) => loginUser(e, email, password, router)}>

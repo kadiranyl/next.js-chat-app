@@ -21,6 +21,7 @@ export function AppContextProvider({children}: any) {
   const [chat, setChat] = useState(Object)
   const [focusSearch, setFocusSearch] = useState(false)
   const [message, setMessage] = useState(String)
+  const [mobileChats, setMobileChats] = useState(false)
 
   
   useEffect(() => {
@@ -54,7 +55,7 @@ export function AppContextProvider({children}: any) {
 
   if (!loading) {
     return (
-      <AppContext.Provider value={{login, searchResult, fireUser, setSearchResult, setSearchChats, search, setSearch, selectedChat, setSelectedChat, chat, setChat, focusSearch, setFocusSearch, message, setMessage}}>
+      <AppContext.Provider value={{login, searchResult, fireUser, setSearchResult, setSearchChats, search, setSearch, selectedChat, setSelectedChat, chat, setChat, focusSearch, setFocusSearch, message, setMessage, setMobileChats, mobileChats, router}}>
         {children}
       </AppContext.Provider>
     )

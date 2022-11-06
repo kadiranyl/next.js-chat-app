@@ -1,13 +1,11 @@
 import { useApp } from "context/AppContext";
 import { auth } from "lib/firebase";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 
 export default function Layout({children, ...customMeta}: any) {
-  const { fireUser }: any = useApp()
-  const router = useRouter()
+  const { fireUser, mobileChats, router }: any = useApp()
   
   const meta = {
     description: ``,
@@ -17,6 +15,8 @@ export default function Layout({children, ...customMeta}: any) {
     path: process.env.NEXT_PUBLIC_SITE_URL + router.asPath,
     ...customMeta,
   };
+  
+  console.log(router);
   
 
 
@@ -55,7 +55,7 @@ export default function Layout({children, ...customMeta}: any) {
   
             <div className="full-main">
                 <Sidebar />
-                <main>
+                <main className={router.asPath === "/?chats=active" ? "open-chats" : undefined}>
                   {children}
                 </main>
             </div>

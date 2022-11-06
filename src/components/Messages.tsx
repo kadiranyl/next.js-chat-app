@@ -11,7 +11,7 @@ import dayjs from "dayjs"
 
 
 export default function Chat() {
-  const { selectedChat, chat, setChat, message, setMessage }: any = useApp()
+  const { selectedChat, chat, setChat, message, setMessage, router }: any = useApp()
   const [messages, setMessages] = useState([])
   const [emoji, setEmoji] = useState(false)
   const [chatPerson, setChatPerson] = useState(Object)
@@ -55,7 +55,7 @@ export default function Chat() {
   }
   
   return (
-    <div className="chat">
+    <div className="chat" onClick={() => router.asPath === "/?chats=active" && router.push("/")}>
         {selectedChat !== "" ? (
 
           <>

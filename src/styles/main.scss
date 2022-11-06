@@ -184,6 +184,7 @@ button, input {
       width: 85px;
       gap: 32px;
       border-right: $border;
+      z-index: 20;
 
       a {
         padding: 14px;
@@ -649,4 +650,9 @@ button, input {
       }
     }
   }
+}
+
+
+.show-laptop {
+  display: none !important;
 }

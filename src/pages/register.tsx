@@ -1,9 +1,9 @@
+import { useApp } from 'context/AppContext'
 import { createUser } from 'lib/auth'
-import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
 export default function Register() {
-  const router = useRouter()
+  const { router }: any = useApp()
   const [displayName, setDisplayName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")

@@ -21,7 +21,45 @@ $border: 1px solid #2F3038;
 
 
 @media screen and (max-width: 1023px) {
+    .full-page .full-main main .messages {
+        display: none;
+        width: 100%;
+        transform: translateX(-400px);
+        transition: all .6s ease;
+    }
 
+    .full-page .full-main main.open-chats {
+        position: relative;
+
+        .messages {
+            width: 60%;
+            display: flex;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 10;
+            background: $gray;
+            transform: translateX(0);
+        }
+
+        .chat {
+            position: relative;
+
+            &:after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                background: rgba(0,0,0,0.2);
+            }
+        }
+    }
+    .show-laptop {
+        display: flex !important;
+    }
 }
 
 
@@ -40,12 +78,6 @@ $border: 1px solid #2F3038;
         width: 100%;
     }
 
-    .full-page .full-main main .messages {
-        display: none;
-        width: 100%;
-        background: $dark;
-    }
-
     .full-page .full-main main .chat .chat-main .send-message .send-more svg {
         width: 22px;
     }
@@ -56,6 +88,14 @@ $border: 1px solid #2F3038;
 
     .full-page nav .nav-item .profile-dropdown span {
         display: none;
+    }
+
+    .full-page .full-main main.open-chats .messages {
+        width: 80%;
+    }
+
+    .full-page .full-main main .chat .chat-main .messages-section .message-person .message, .full-page .full-main main .chat .chat-main .messages-section .message-me .message {
+        width: 90%;
     }
 }
 
