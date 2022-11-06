@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { BiSearch } from 'react-icons/bi'
 
 export default function Search() {
-  const { setSearchResult, search, setSearch, focusSearch } = useApp()
+  const { setSearchResult, search, setSearch, focusSearch }: any = useApp()
 
   useEffect(() => {
     getFireUsers(setSearchResult, search)

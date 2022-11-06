@@ -1,9 +1,12 @@
+import { useApp } from "context/AppContext";
+import { auth } from "lib/firebase";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 
 export default function Layout({children, ...customMeta}: any) {
+  const { fireUser }: any = useApp()
   const router = useRouter()
   
   const meta = {
@@ -17,7 +20,7 @@ export default function Layout({children, ...customMeta}: any) {
   
 
 
-  if (true) {
+  if (fireUser && auth.currentUser) {
     return (
       <>
           <Head>
@@ -61,4 +64,8 @@ export default function Layout({children, ...customMeta}: any) {
       </>
     )
   }
+  return (
+    <>
+    </>
+  )
 }

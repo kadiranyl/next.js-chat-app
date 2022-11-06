@@ -21,9 +21,18 @@ export const db = getFirestore(app)
 export const auth: any = getAuth(app)
 
 
-export async function sendMessage(e: any, uid: String, selectedChat: any, message: String, setMessage: Function) {
+export async function sendMessage(e: any, uid: any, selectedChat: any, message: String, setMessage: Function) {
   e.preventDefault()
   setMessage("")
+
+  var uid2
+
+  selectedChat.split("-").map((uidd: any) => {
+    if(uidd !== auth.currentUser.uid) {
+      uid2 = uidd
+    }
+  })
+  
 
   if (message.length>0) {
     try {
@@ -36,6 +45,36 @@ export async function sendMessage(e: any, uid: String, selectedChat: any, messag
           }
         )
       });
+
+
+      const last_message = message.length<30 ? message : message.slice(0, 25) + "..."
+
+      const hasChat = await getDoc(doc(db, `accounts/${uid2}/chats`, uid))      
+
+      if (!hasChat.data()) {
+        const docRef4 = await setDoc(doc(collection(db, `accounts/${uid2}/chats`), uid), {
+          favorite: false,
+          uid: uid,
+          last_message,
+          unread_message: 1,
+          timestamp: serverTimestamp(),
+        });
+      } else {
+        const docRef2 = await updateDoc(doc(db, `accounts/${uid2}/chats`, uid), {
+          last_message,
+          unread_message: hasChat.data()?.unread_message+1,
+          timestamp: serverTimestamp()
+        });
+      }
+
+
+
+
+      const docRef2 = await updateDoc(doc(db, `accounts/${uid}/chats`, `${uid2}`), {
+        last_message,
+        timestamp: serverTimestamp()
+      });
+      
   
   
     } catch (e) {
@@ -46,10 +85,7 @@ export async function sendMessage(e: any, uid: String, selectedChat: any, messag
 
 
 
-export async function getMessages(setMessages: Function, selectedChat: any) {
-
-  console.log();
-  
+export async function getMessages(setMessages: Function, selectedChat: any) {  
     
   try {
     const res = await onSnapshot(doc(db, "messages", selectedChat), (doc) => {
@@ -66,24 +102,28 @@ export async function getMessages(setMessages: Function, selectedChat: any) {
 
 
 export async function getFireUser(setUser: Function, uid: any) {  
-    
-  try {
-    const res = await onSnapshot(doc(db, "accounts", uid), (doc) => {
-      setUser(doc.data())
-    })
-  } catch (e) {
-    console.log(e);
+
+  if (uid) {
+    try {
+      const res = await onSnapshot(doc(db, "accounts", uid), (doc) => {
+        setUser(doc.data())
+      })
+    } catch (e) {
+      console.log(e);
+    }
   }
+  
 
 
 }
 
 
 
+
 export async function getFireUsers(setSearchResult: Function, search: String) {
     
   try {
-    const res = await getDocs(query(collection(db, 'accounts'), where("displayName", "==", search), orderBy("timestamp", "desc"), limit(5)))
+    const res = await getDocs(query(collection(db, 'accounts'), where("display_name", "==", search), where("uid", "!=", auth.currentUser.uid), limit(20)))
     
     setSearchResult(res.docs.map((item) => {
 
@@ -95,21 +135,6 @@ export async function getFireUsers(setSearchResult: Function, search: String) {
   }
 
 
-}
-
-
-
-export async function getChats(uid: String, setChats: Function) {
-  try {
-    const res = await getDocs(query(collection(db, 'chats'), where("uid2", "array-contains-any", uid)))
-    setChats(res.docs.map((item) => {
-
-      return { ...item.data(), id: item.id }
-
-    }));
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
 }
 
 export async function getChat(setChat: Function, selectedChat: any) {
@@ -138,32 +163,99 @@ export async function changeTypingStatus(selectedChat: any, chat: any, value: bo
 
 
 
-export async function openChat(setSearch : Function, uid: String, uid2: String, setSelectedChat: Function) {
+export async function openChat(setSearch : Function, uid: any, uid2: any, setSelectedChat: Function) {
   setSearch("")
   const chatId = uid>uid2 ? `${uid}-${uid2}` : `${uid2}-${uid}`
 
-  try {
-    const hasChat = await getDoc(doc(db, 'messages', chatId))
 
-    if (!hasChat.data()) {
-      const docRef = await setDoc(doc(collection(db, "messages"), chatId), {
-        msgs: [],
-        timestamp: serverTimestamp()
-      });
-
-
-      const docRef2 = await setDoc(doc(collection(db, "chats"), chatId), {
-        uid,
-        uid2,
-        timestamp: serverTimestamp(),
-        typing_uid: false,
-        typing_uid2: false,
-      });
+  if (uid !== uid2) {
+    try {
+      const hasChat = await getDoc(doc(db, 'messages', chatId))
+  
+      if (!hasChat.data()) {
+        const docRef = await setDoc(doc(collection(db, "messages"), chatId), {
+          msgs: [],
+          timestamp: serverTimestamp()
+        });
+  
+  
+        const docRef2 = await setDoc(doc(collection(db, "chats"), chatId), {
+          uid,
+          uid2,
+          timestamp: serverTimestamp(),
+          typing_uid: false,
+          typing_uid2: false,
+        });
+  
+  
+  
+        const docRef3 = await setDoc(doc(collection(db, `accounts/${uid}/chats`), uid2), {
+          favorite: false,
+          uid: uid2,
+          last_message: "",
+          unread_message: 0,
+          timestamp: serverTimestamp(),
+        });
+  
+      }
+  
+        
+      localStorage.setItem("last_opened_chat", uid2)
+  
+      setSelectedChat(chatId)
+  
+    } catch (e) {
+      console.error("Error adding document: ", e);
     }
+  }
+}
 
-    setSelectedChat(chatId)
+
+
+export async function getUserChats(setChats: Function, setFireUsersChat: Function, setHasFavorites: Function, fireUsersChat: any, chats: any, uid: any) {  
+    
+  try {
+    const res = await onSnapshot(query(collection(db, `accounts/${uid}/chats`), orderBy("timestamp", "desc")), (data: any) => {
+      setChats(data.docs.map((item: any) => {
+        return { ...item.data(), id: item.id }
+      }));
+
+
+      data?.docs?.map(async (chat: any) => {
+
+          const getAccount = await getDoc(doc(db, `accounts`, chat.data().uid))
+          
+
+          if (fireUsersChat.find((a: any) => a.uid === chat.uid) === undefined) {
+             setFireUsersChat((oldArray: any) => [...oldArray, {
+                display_name: getAccount.data()?.display_name,
+                online: getAccount.data()?.online,
+                uid: getAccount.data()?.uid,
+                biography: getAccount.data()?.biography,
+                image_url: getAccount.data()?.image_url,
+              }])
+            
+            if (chat.favorite) {
+              setHasFavorites(true)
+            }
+          }
+          console.log(chat.data());
+          
+          if (chat.data().favorite === true) {
+            setHasFavorites(true)
+          }
+
+      })
+    })
+
+    
+
 
   } catch (e) {
-    console.error("Error adding document: ", e);
+    console.log(e);
   }
+
+
+  
+
 }

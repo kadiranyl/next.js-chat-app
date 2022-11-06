@@ -11,14 +11,14 @@ import EmojiPicker from 'emoji-picker-react';
 
 
 export default function Chat() {
-  const { selectedChat, chat, setChat } = useApp()
+  const { selectedChat, chat, setChat, message, setMessage }: any = useApp()
   const [messages, setMessages] = useState([])
-  const [message, setMessage] = useState(String)
   const [emoji, setEmoji] = useState(false)
   const [chatPerson, setChatPerson] = useState(Object)
+  const [chatUid, setChatUid] = useState(String)
   const [meUid, setMeUid] = useState(String)
+  var oldTime: any
 
-  const [showInfos, setShowInfos] = useState(true)
 
   useEffect(() => {
     getMessages(setMessages, selectedChat)
@@ -40,9 +40,24 @@ export default function Chat() {
   }, [message])
   
   
-  console.log();
   
+  useEffect(() => {
+    localStorage.setItem(`last_messages`, JSON.stringify([
+      {
+        uid: chatPerson.uid,
+        message
+      }
+    ]))
+  }, [message])
 
+
+  const setOldTime = (time: any) => {
+    oldTime = time
+
+    console.log(oldTime);
+    
+  }
+  
   return (
     <div className="chat">
         {selectedChat !== "" ? (
@@ -50,16 +65,16 @@ export default function Chat() {
           <>
             <div className="title">
               <div className="chat-info">
-                <Image src={chatPerson.imageUrl} width={48} height={48} alt="" />
+                <Image src={chatPerson.image_url} width={48} height={48} alt="" />
                 <div className="chat-more-info">
-                  <span>{chatPerson.displayName}</span>
-                  <p>
-                   {(meUid !== "typing_uid" ? chat.typing_uid : chat.typing_uid2) === true ? (
+                  <span>{chatPerson.display_name}</span>
+                  {/* <p>
+                   {(auth.currentUser.uid !== chat.uid ? chat.typing_uid : chat.typing_uid2) === true ? (
                     "Typing..."
-                   ) : 
+                   ) :
                     chatPerson.online ? "Online" : "Last seen: "
                    }
-                  </p>
+                  </p> */}
                 </div>
               </div>
 
@@ -70,12 +85,18 @@ export default function Chat() {
                 <button type="button" className="circle-btn">
                   <BiDotsVerticalRounded />
                 </button>
+
+
               </div>
+
             </div>
 
             <div className="chat-main">
               <div className="messages-section">
-                {messages?.length>0 ? messages.map((message: any, index) => (
+                {messages?.length>0 ? messages.map((message: any, index) => {                
+                
+                                  
+                return (
                   <>
                     {message?.uid === auth?.currentUser?.uid ? (
                       <div className="message-me" key={index}>
@@ -86,15 +107,13 @@ export default function Chat() {
                         </div>
                       </div>
                     ) : (
-                      <div className="message-person" key={index}>
-                        {
-                        showInfos && (
-                        <Image src={chatPerson.imageUrl} width={36} height={36} alt="" className="profile" />
-                        )
-                        }
+                      <div className="message-person" key={index} onLoad={() => setOldTime(message.created_at)} >
+                        {oldTime - message?.timestamp?.seconds > 60 && (
+                        <Image src={chatPerson.image_url || ""} width={36} height={36} alt="" className="profile" />
+                        )}
                         <div className="message">
                           <div className="message-creator">
-                            <span>{chatPerson.displayName}</span>
+                            <span>{chatPerson.display_name}</span>
                             <p>{message?.timestamp?.seconds}</p>
                           </div>
                           <p className="msg">
@@ -105,6 +124,8 @@ export default function Chat() {
                     )}
                   </>
                 )
+                
+                }
                 ) : (
                   <span>No message found</span>
                 )}
@@ -121,11 +142,11 @@ export default function Chat() {
 
                 <div className="send-more">
                   <div className="pick-emoji">
-                    <BsEmojiSmile size={24} onClick={() => setEmoji(!emoji)} />
+                    <BsEmojiSmile size={22} onClick={() => setEmoji(!emoji)} />
 
-                    {emoji && (
+                    {/* {emoji && (
                         <EmojiPicker theme="dark" onEmojiClick={(e: any) => setMessage(e.emoji)} />
-                    )}
+                    )} */}
 
                   </div>
                   <AiTwotoneAudio size={24} />

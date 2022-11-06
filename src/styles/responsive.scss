@@ -1,0 +1,74 @@
+$dark: #171821;
+$gray: #23242C;
+$light-gray: #A1A4BC;
+$white: #f4f4f4;
+$theme-color: #9068FE;
+$red: #FF3636;
+$border: 1px solid #2F3038;
+
+
+
+@media screen and (max-width: 1362px) {
+
+}
+
+
+
+@media screen and (max-width: 1119px) {
+
+}
+
+
+
+@media screen and (max-width: 1023px) {
+
+}
+
+
+
+
+@media screen and (max-width: 899px) {
+
+}
+
+
+
+
+@media screen and (max-width: 767px) {
+
+    .full-page nav .nav-item .search-input {
+        width: 100%;
+    }
+
+    .full-page .full-main main .messages {
+        display: none;
+        width: 100%;
+        background: $dark;
+    }
+
+    .full-page .full-main main .chat .chat-main .send-message .send-more svg {
+        width: 22px;
+    }
+
+    .full-page nav {
+        gap: 6px;
+    }
+
+    .full-page nav .nav-item .profile-dropdown span {
+        display: none;
+    }
+}
+
+
+
+
+@media screen and (max-width: 599px) {
+
+}
+
+
+
+
+@media screen and (max-width: 479px) {
+
+}

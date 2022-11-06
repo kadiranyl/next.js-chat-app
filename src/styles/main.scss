@@ -339,11 +339,13 @@ button, input {
             .more {
               display: flex;
               flex-direction: column;
-              align-items: center;
-              gap: 4px;
+              align-items: flex-end;
+              gap: 6px;
 
               .message-time {
                 font-size: 12px;
+                text-align: right;
+                color: $light-gray;
               }
 
               .message-count {
@@ -379,6 +381,7 @@ button, input {
           padding: 32px;
           border-bottom: $border;
 
+
           .chat-info {
             display: flex;
             align-items: center;
@@ -395,12 +398,17 @@ button, input {
           }
 
 
+
           .chat-buttons {
             display: flex;
             align-items: center;
             gap: 12px;
+            position: relative;
 
             
+            .chat-options {
+              position: absolute;
+            }
           }
         }
 
@@ -422,6 +430,10 @@ button, input {
             display: flex;
             padding: 12px 0;
             flex-direction: column-reverse;
+
+            .msg {
+              overflow-wrap: anywhere;
+            }
 
 
             .message-me {
