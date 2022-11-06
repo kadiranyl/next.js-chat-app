@@ -9,7 +9,7 @@ import { IoMdAdd } from 'react-icons/io'
 export default function Messages() {
   const { setSearch, searchResult, search, setSelectedChat, setMessage, setFocusSearch }: any = useApp()
 
-  const [fireUsersChat, setFireUsersChat] = useState([{ display_name: '', image_url: '', biography: '', uid: '' }])
+  const [fireUsersChat, setFireUsersChat] = useState([{ display_name: '', image_url: '', biography: '', uid: '', online: false }])
   const [chats, setChats] = useState(Array)
   const [hasFavorites, setHasFavorites] = useState(false)
 
@@ -39,7 +39,7 @@ export default function Messages() {
 
 
   const findFireUsersChat = (uidd: String) => {
-    return fireUsersChat.find((a: any) => a.uid === uidd) || { display_name: '', image_url: '', biography: '', uid: '' }
+    return fireUsersChat.find((a: any) => a.uid === uidd) || { display_name: '', image_url: '', biography: '', uid: '', online: false }
     
   }
   
@@ -134,7 +134,11 @@ export default function Messages() {
                 return (
                   <div key={index} className="message-item" onClick={() => openChatHandler(chat) }>
                     <div className="content">
-                      <Image src={findFireUsersChat(chat.uid).image_url} width={36} height={36} alt="" />
+                      <div className="avatar">
+                        <Image src={findFireUsersChat(chat.uid).image_url} width={36} height={36} alt="" />
+                        <div className={`status ${findFireUsersChat(chat.uid).online ? true : "offline"}`}></div>
+                      </div>
+                      
                       <div className="content-title">
                         <span>
                           {findFireUsersChat(chat.uid).display_name}

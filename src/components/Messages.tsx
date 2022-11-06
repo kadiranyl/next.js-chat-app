@@ -6,7 +6,7 @@ import { BsEmojiSmile } from 'react-icons/bs'
 import { useEffect, useState } from "react"
 import { auth, changeTypingStatus, getChat, getFireUser, getMessages, sendMessage } from "lib/firebase"
 import { useApp } from "context/AppContext"
-import EmojiPicker from 'emoji-picker-react';
+import dayjs from "dayjs"
 
 
 
@@ -15,9 +15,8 @@ export default function Chat() {
   const [messages, setMessages] = useState([])
   const [emoji, setEmoji] = useState(false)
   const [chatPerson, setChatPerson] = useState(Object)
-  const [chatUid, setChatUid] = useState(String)
   const [meUid, setMeUid] = useState(String)
-  var oldTime: any
+  var oldTime = 0
 
 
   useEffect(() => {
@@ -53,9 +52,6 @@ export default function Chat() {
 
   const setOldTime = (time: any) => {
     oldTime = time
-
-    console.log(oldTime);
-    
   }
   
   return (
@@ -93,10 +89,7 @@ export default function Chat() {
 
             <div className="chat-main">
               <div className="messages-section">
-                {messages?.length>0 ? messages.map((message: any, index) => {                
-                
-                                  
-                return (
+                {messages?.length>0 ? messages.map((message: any, index) => (
                   <>
                     {message?.uid === auth?.currentUser?.uid ? (
                       <div className="message-me" key={index}>
@@ -107,14 +100,12 @@ export default function Chat() {
                         </div>
                       </div>
                     ) : (
-                      <div className="message-person" key={index} onLoad={() => setOldTime(message.created_at)} >
-                        {oldTime - message?.timestamp?.seconds > 60 && (
-                        <Image src={chatPerson.image_url || ""} width={36} height={36} alt="" className="profile" />
-                        )}
+                      <div className="message-person" key={index} >
+                        
                         <div className="message">
                           <div className="message-creator">
-                            <span>{chatPerson.display_name}</span>
-                            <p>{message?.timestamp?.seconds}</p>
+                            <span>{oldTime === 0 ? chatPerson.display_name : message.created_at - oldTime > 60 && chatPerson.display_name}</span>
+                            <p>{dayjs.unix(message.created_at).fromNow()}</p>
                           </div>
                           <p className="msg">
                           {message?.message}
@@ -125,7 +116,7 @@ export default function Chat() {
                   </>
                 )
                 
-                }
+              
                 ) : (
                   <span>No message found</span>
                 )}
