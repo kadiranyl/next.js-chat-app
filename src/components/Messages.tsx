@@ -4,7 +4,7 @@ import { FaPhoneAlt, FaPaperPlane } from 'react-icons/fa'
 import { BiDotsVerticalRounded } from 'react-icons/bi'
 import { BsEmojiSmile } from 'react-icons/bs'
 import { useEffect, useState } from "react"
-import { auth, changeTypingStatus, getChat, getFireUser, getMessages, sendMessage } from "lib/firebase"
+import { auth, changeTypingStatus, getChat, getFireUser, getMessages, sendMessage } from "lib/firebase/firebase"
 import { useApp } from "context/AppContext"
 import dayjs from "dayjs"
 
@@ -155,7 +155,7 @@ export default function Chat() {
 
           <div className="no-chat">
 
-            <span>Start talking</span>
+            <span>Please type "demo" to search for test.</span>
           </div>
 
         )}

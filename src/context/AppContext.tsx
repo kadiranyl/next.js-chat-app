@@ -1,6 +1,6 @@
 import { onAuthStateChanged } from "firebase/auth"
-import { signOutHandler } from "lib/auth"
-import { auth, getFireUser } from "lib/firebase"
+import { signOutHandler } from "lib/firebase/auth"
+import { auth, getFireUser } from "lib/firebase/firebase"
 import { useRouter } from "next/router"
 import { createContext, useContext, useEffect, useState } from "react"
 
@@ -22,7 +22,7 @@ export function AppContextProvider({children}: any) {
   const [focusSearch, setFocusSearch] = useState(false)
   const [message, setMessage] = useState(String)
   const [mobileChats, setMobileChats] = useState(false)
-
+  
   
   useEffect(() => {
     if (localStorage.getItem("last_message")) {
@@ -60,8 +60,4 @@ export function AppContextProvider({children}: any) {
       </AppContext.Provider>
     )
   }
-  return (
-    <>
-    </>
-  )
 }

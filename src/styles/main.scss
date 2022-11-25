@@ -649,6 +649,23 @@ button, input {
         color: $theme-color;
       }
     }
+
+    .not-yet {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 8px;
+
+      span {
+        font-size: 14px;
+        color: $light-gray;
+      }
+      a {
+        font-size: 14px;
+        color: $white;
+      }
+    }
   }
 }
 

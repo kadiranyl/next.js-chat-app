@@ -1,18 +1,19 @@
 import { useApp } from "context/AppContext"
 import dayjs from "dayjs"
-import { auth, getUserChats, openChat } from "lib/firebase"
+import { auth, getUserChats, openChat } from "lib/firebase/firebase"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { IoMdAdd } from 'react-icons/io'
 
 
 export default function Messages() {
-  const { setSearch, searchResult, search, setSelectedChat, setMessage, setFocusSearch, router }: any = useApp()
+  const { setSearch, searchResult, search, setSelectedChat, setMessage, setFocusSearch, router, chat }: any = useApp()
 
   const [fireUsersChat, setFireUsersChat] = useState([{ display_name: '', image_url: '', biography: '', uid: '', online: false }])
   const [chats, setChats] = useState(Array)
   const [hasFavorites, setHasFavorites] = useState(false)
 
+  console.log(chat);
   
 
   useEffect(() => {
@@ -129,29 +130,29 @@ export default function Messages() {
             <h3>All Messages</h3>
             
               
-            {chats && chats.map((chat: any, index) => {
-              if (!chat.favorite) {
+            {chats && chats.map((item: any, index) => {
+              if (!item.favorite) {
                 return (
-                  <div key={index} className="message-item" onClick={() => openChatHandler(chat) }>
+                  <div key={index} className={"message-item "} onClick={() => openChatHandler(item) }>
                     <div className="content">
                       <div className="avatar">
-                        <Image src={findFireUsersChat(chat.uid).image_url} width={36} height={36} alt="" />
-                        <div className={`status ${findFireUsersChat(chat.uid).online ? "online" : "offline"}`}></div>
+                        <Image src={findFireUsersChat(item.uid).image_url} width={36} height={36} alt="" />
+                        <div className={`status ${findFireUsersChat(item.uid).online ? "online" : "offline"}`}></div>
                       </div>
                       
                       <div className="content-title">
                         <span>
-                          {findFireUsersChat(chat.uid).display_name}
+                          {findFireUsersChat(item.uid).display_name}
                         </span>
-                        <p>{chat.last_message === "" ? findFireUsersChat(chat.uid).biography : chat.last_message}</p>
+                        <p>{item.last_message === "" ? findFireUsersChat(item.uid).biography : item.last_message}</p>
                       </div>
                     </div>
 
                     <div className="more">
-                      <span className="message-time">{dayjs.unix(chat.timestamp?.seconds).fromNow()}</span>
+                      <span className="message-time">{dayjs.unix(item.timestamp?.seconds).fromNow()}</span>
                       
-                      {chat.unread_message !== 0 && (
-                        <span className="message-count">{chat.unread_message}</span>
+                      {item.unread_message !== 0 && (
+                        <span className="message-count">{item.unread_message}</span>
                       )}
                     </div>
                   </div>

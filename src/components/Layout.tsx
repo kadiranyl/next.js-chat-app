@@ -1,5 +1,5 @@
 import { useApp } from "context/AppContext";
-import { auth } from "lib/firebase";
+import { auth } from "lib/firebase/firebase";
 import Head from "next/head";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";

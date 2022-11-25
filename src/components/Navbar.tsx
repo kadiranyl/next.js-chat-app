@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { BiChevronDown } from 'react-icons/bi'
 import Link from "next/link";
-import { signOutHandler } from "lib/auth";
+import { signOutHandler } from "lib/firebase/auth";
 import Search from "./Search";
-import { auth } from "lib/firebase";
+import { auth } from "lib/firebase/firebase";
 
 export default function Navbar() {
 

@@ -1,5 +1,5 @@
 import { useApp } from 'context/AppContext'
-import { getFireUsers } from 'lib/firebase'
+import { getFireUsers } from 'lib/firebase/firebase'
 import { useEffect, useState } from 'react'
 import { BiSearch } from 'react-icons/bi'
 
@@ -9,7 +9,6 @@ export default function Search() {
   useEffect(() => {
     getFireUsers(setSearchResult, search)
   }, [search])
-  
   
   return (
     <div className="search-input">

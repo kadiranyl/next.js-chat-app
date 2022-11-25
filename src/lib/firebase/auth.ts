@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import { collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "./firebase";
-import { showAlert } from "./Toast";
+import { showAlert } from "../Toast";
 
 
 export async function createUser(e: any, displayName: any, email: string, password: string, router: any) {

@@ -60,6 +60,10 @@ $border: 1px solid #2F3038;
     .show-laptop {
         display: flex !important;
     }
+
+    .full-page .full-main aside a:hover svg {
+        color: $light-gray;
+    }
 }
 
 
@@ -86,8 +90,8 @@ $border: 1px solid #2F3038;
         gap: 6px;
     }
 
-    .full-page nav .nav-item .profile-dropdown span {
-        display: none;
+    .full-page nav .nav-item .profile-dropdown {
+        display: none !important;
     }
 
     .full-page .full-main main.open-chats .messages {
